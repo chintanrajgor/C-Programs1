@@ -1,0 +1,160 @@
+#include<stdio.h>
+#include<conio.h>
+#include<malloc.h>
+struct node
+{
+     int data;
+     struct node *next;
+};
+
+typedef struct node NODE;
+
+NODE *start=NULL;
+NODE *createNode();
+NODE *create();
+
+void display(NODE *);
+int count(NODE *);
+
+NODE * insertEnd(NODE *);
+NODE * deleteEnd(NODE *);
+
+int main()
+{
+		NODE *L=NULL;
+		int choice;
+		clrscr();
+		do
+		{
+		printf("1.Create List\n");
+		printf("2.Insert at End\n");
+		printf("3.Delete at End\n");
+		printf("4.Display\n");
+		printf("5.Exit\n");
+		printf("Enter your choice: ");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+				case 1: L=create();
+						break;
+				case 2: L=insertEnd(L);
+						break;
+				case 3: L=deleteEnd(L);
+						break;
+				case 4: display(L);
+						break;
+				}
+		}while(choice!=5);
+		getch();
+		return 0;
+}
+
+
+NODE * createNode()
+{
+		NODE *newNode;
+		newNode=(NODE *)malloc(sizeof(NODE));
+		printf("\nEnter data item:");
+		scanf("%d",&newNode->data);
+		newNode->next=NULL;
+		return newNode;
+}
+
+
+NODE * create()
+{
+		int choice;
+		NODE *start=NULL;
+		do
+		{
+		if(start==NULL)
+		{
+				start=createNode();
+				start->next=start;
+
+		}
+		else
+		{
+				insertEnd(start);
+		}
+		printf("Press 1 to continue:");
+		scanf("%d",&choice);
+		}while(choice==1);
+		return start;
+}
+
+int count(NODE *start)
+{
+		int cnt=0;
+		NODE *p=start;
+		do
+		{
+				cnt++;
+				p=p->next;
+		}while(p!=start);
+		return cnt;
+}
+
+void display(NODE *start)
+{
+		NODE *p;
+		p=start;
+		printf("\nElements of Linked list are:");
+		if(p==NULL){
+		printf("No nodes\n");
+		}
+		else{
+		do
+		{
+				printf("%d->",p->data);
+				p=p->next;
+		}while(p!=start);
+		printf("%d\n",p->data);
+		}
+}
+
+
+
+
+
+NODE * insertEnd(NODE *start)
+{
+		if(start==NULL){
+		start=create();
+		}
+		else{
+		NODE *p,*newNode;
+		newNode=createNode();
+		p=start;
+		while(p->next!=start)
+		{
+				p=p->next;
+		}
+		p->next=newNode;
+		newNode->next=start;
+		}
+		return start;
+}
+
+
+NODE * deleteEnd(NODE *start)
+{
+		int cnt;
+		NODE *p=start,*pre;
+		cnt=count(start);
+		if(cnt==0)
+				printf("No nodes to delete");
+		else if(cnt==1)
+				start=NULL;
+		else
+		{
+				while(p->next!=start)
+				{
+						pre=p;
+						p=p->next;
+				}
+				pre->next=start;
+				free(p);
+		}
+		return start;
+}
